@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -50,7 +50,6 @@ export function Editor({ route, navigation }) {
               actions.setItalic,
               actions.setUnderline,
               actions.setStrikethrough,
-
               actions.insertOrderedList,
               actions.insertBulletsList,
               actions.outdent,
