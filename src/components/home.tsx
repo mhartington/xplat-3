@@ -1,15 +1,18 @@
-import { Button, View,  FlatList } from 'react-native';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { Button, View, FlatList } from 'react-native';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import { ListItem, Button as RNEButton } from '@rneui/themed';
 import * as FileSystem from 'expo-file-system';
+import { useFocusEffect } from '@react-navigation/native';
 
 export function Home({ navigation }) {
   const [files, setFiles] = useState([]);
-  useEffect(() => {
-    initFS();
-  });
 
+  useFocusEffect(
+    useCallback(() => {
+      readDir();
+    }, [])
+  );
   const initFS = async () => {
     await makeDir();
     await readDir();
@@ -47,7 +50,8 @@ export function Home({ navigation }) {
   const deleteNote = async (note: string) => {
     const fileUri = `${FileSystem.documentDirectory}notes/${note}`;
     await FileSystem.deleteAsync(fileUri);
-  }
+    await readDir();
+  };
 
   const keyExtractor = (_item: string, index: number) => index.toString();
   const renderItem = ({ item }) => (
@@ -57,9 +61,9 @@ export function Home({ navigation }) {
       rightContent={(reset) => (
         <RNEButton
           title="Delete"
-          onPress={async() => {
-            await deleteNote(item)
-            reset()
+          onPress={async () => {
+            await deleteNote(item);
+            reset();
           }}
           icon={{ name: 'delete', color: 'white' }}
           buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
