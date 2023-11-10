@@ -1,5 +1,5 @@
 import { Button, View, FlatList } from 'react-native';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 
 import { ListItem, Button as RNEButton } from '@rneui/themed';
 import * as FileSystem from 'expo-file-system';
@@ -10,14 +10,14 @@ export function Home({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
-      readDir();
+      initFS();
     }, [])
   );
+
   const initFS = async () => {
     await makeDir();
     await readDir();
   };
-
   const makeDir = async () => {
     const { exists } = await FileSystem.getInfoAsync(
       FileSystem.documentDirectory + 'notes/'
